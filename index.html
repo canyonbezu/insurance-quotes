@@ -1,157 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>Your Personalised Protection Summary</title>
-  <!-- Tailwind CSS -->
-  <script src="https://tailwindcss.com"></script>
-  <!-- Google Fonts: Inter for that Vercel aesthetic -->
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      font-feature-settings: "cv02","cv03","cv04","cv11";
+    }
+    .tnum { font-variant-numeric: tabular-nums; }
+
+    /* Vercel-style ambient glow + faint grid */
+    .ambient {
+      background:
+        radial-gradient(ellipse 80% 45% at 50% -10%, rgba(0,112,243,0.10), transparent 60%),
+        radial-gradient(ellipse 60% 35% at 80% 0%, rgba(255,255,255,0.05), transparent 60%);
+    }
+    .grid-lines {
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+      -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%);
+      mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%);
+    }
+
+    /* Budget swap fade */
+    #budget-content { transition: opacity .18s ease; }
+    #budget-content.is-fading { opacity: 0; }
+
+    button:focus-visible, a:focus-visible { outline: 1px solid #888; outline-offset: 2px; border-radius: 6px; }
   </style>
 </head>
-<body class="bg-[#000000] text-[#ffffff] min-h-screen antialiased selection:bg-[#333333]">
 
-  <!-- Main Container -->
-  <main class="max-w-4xl mx-auto px-6 py-16 md:py-24">
-    
-    <!-- Header -->
-    <header class="border-b border-[#222222] pb-8 mb-12">
-      <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#111111] border border-[#333333] text-gray-400 mb-4">
+<body class="bg-black text-white min-h-screen antialiased selection:bg-[#333] selection:text-white">
+
+  <!-- Ambient background -->
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute inset-0 ambient"></div>
+    <div class="absolute inset-0 grid-lines"></div>
+  </div>
+
+  <!-- Top nav -->
+  <header class="sticky top-0 z-50 border-b border-[#1f1f1f] bg-black/70 backdrop-blur-md">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-6 h-6 rounded-[6px] bg-white flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="text-sm font-semibold tracking-tight">Protection Summary</span>
+      </div>
+      <div class="text-xs text-[#888]">
+        Prepared for <span id="nav-name" class="text-white font-medium">Joe &amp; Nina</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative max-w-5xl mx-auto px-6 py-12 md:py-20 space-y-16 md:space-y-20">
+
+    <!-- ═══ Hero ═══ -->
+    <header>
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#111] border border-[#333] text-[#888] mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
         Personalised Protection Summary
       </div>
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">
-        Hello, <span id="customer-name">Joe & Nina</span>
+      <h1 class="text-3xl md:text-5xl font-bold tracking-tighter mb-3">
+        Hello, <span id="customer-name">Joe &amp; Nina</span>.
       </h1>
-      <p class="text-sm text-gray-400">
-        Review your calculated objectives, cost breakdowns, and provider recommendations.
+      <p class="text-sm md:text-base text-[#a1a1a1] max-w-xl leading-relaxed">
+        Review your calculated objectives, cost breakdowns and provider recommendations — all in one place.
       </p>
+
+      <!-- At-a-glance stats -->
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 border border-[#1f1f1f] rounded-xl overflow-hidden bg-[#0a0a0a] divide-y sm:divide-y-0 sm:divide-x divide-[#1f1f1f]">
+        <div class="p-4 md:p-5">
+          <div class="text-[10px] uppercase tracking-widest text-[#666] font-semibold mb-1.5">Mortgage amount</div>
+          <div id="stat-mortgage" class="text-lg md:text-xl font-bold tnum">£455,399</div>
+          <div class="text-[11px] text-[#666] mt-1">Joint life · 30-year term</div>
+        </div>
+        <div class="p-4 md:p-5">
+          <div class="text-[10px] uppercase tracking-widest text-[#666] font-semibold mb-1.5">Income to protect</div>
+          <div id="stat-income" class="text-lg md:text-xl font-bold tnum">£5,594<span class="text-xs text-[#666] font-medium">/mo</span></div>
+          <div class="text-[11px] text-[#666] mt-1">Joe · own occupation</div>
+        </div>
+        <div class="p-4 md:p-5">
+          <div class="text-[10px] uppercase tracking-widest text-[#666] font-semibold mb-1.5">Recommended budget</div>
+          <div class="text-lg md:text-xl font-bold tnum">~£100<span class="text-xs text-[#666] font-medium">/mo</span></div>
+          <div class="text-[11px] text-[#666] mt-1">Complete protection tier</div>
+        </div>
+      </div>
     </header>
 
-    <!-- Core Objectives Section -->
-    <section class="mb-16">
-      <h2 class="text-xs uppercase tracking-widest text-gray-500 font-semibold mb-4">Core Objectives</h2>
+    <!-- ═══ Core Objectives ═══ -->
+    <section>
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-[#888] mb-5">Core objectives</h2>
       <div class="grid md:grid-cols-2 gap-4">
-        <div class="bg-[#111111] border border-[#222222] rounded-lg p-5">
-          <div class="font-medium text-white text-sm mb-1">Mortgage Protection</div>
-          <p class="text-xs text-gray-400 leading-relaxed">Protect your residential mortgage if either of you pass away during the 30-year term.</p>
-        </div>
-        <div class="bg-[#111111] border border-[#222222] rounded-lg p-5">
-          <div class="font-medium text-white text-sm mb-1">Income Protection (Joe)</div>
-          <p class="text-xs text-gray-400 leading-relaxed">Secure Joe's earnings if he is unable to work long term due to an accident or illness.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- The Provider Comparison Callout -->
-    <section class="mb-16 bg-[#111111] border border-[#222222] rounded-xl p-6 md:p-8 relative overflow-hidden">
-      <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>
-      </div>
-      <div class="max-w-xl">
-        <h3 class="text-lg font-semibold tracking-tight text-white mb-2">Why we are steering away from Vitality</h3>
-        <p class="text-xs text-gray-400 leading-relaxed mb-6">
-          While Vitality offers premium perks like gym incentives and coffee discounts, their structural financial layout includes a reviewable framework that escalates by 2.5% each year. Over the duration, an unengaged Vitality setup accumulates to <strong class="text-white">£30,479</strong>, whereas fixed alternatives like Aviva protect you long-term at <strong class="text-white">£26,458</strong> with guaranteed stability.
-        </p>
-        
-        <!-- Quick Comparison Table -->
-        <div class="border border-[#222222] rounded-lg overflow-hidden text-xs bg-black">
-          <div class="grid grid-cols-3 bg-[#111111] border-b border-[#222222] p-2.5 font-medium text-gray-400">
-            <div>Coverage</div>
-            <div>Vitality (Reviewable)</div>
-            <div class="text-green-400">Aviva (Guaranteed)</div>
+        <div class="bg-[#0a0a0a] border border-[#1f1f1f] rounded-xl p-5 hover:border-[#2e2e2e] transition-colors">
+          <div class="flex items-start gap-3.5">
+            <div class="shrink-0 w-8 h-8 rounded-lg bg-[#111] border border-[#1f1f1f] flex items-center justify-center text-[#888]">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold mb-1">Mortgage Protection</div>
+              <p class="text-xs text-[#888] leading-relaxed">Protect your £455,399 residential mortgage if either of you passes away during the 30-year term.</p>
+            </div>
           </div>
-          <div class="grid grid-cols-3 p-2.5 border-b border-[#111111]">
-            <div class="text-gray-300">Joint Mortgage Life</div>
-            <div class="text-gray-500">£40.21 /mo</div>
-            <div class="text-white font-medium">£37.73 /mo</div>
-          </div>
-          <div class="grid grid-cols-3 p-2.5">
-            <div class="text-gray-300">Income Protection</div>
-            <div class="text-gray-500">£55.70 /mo</div>
-            <div class="text-white font-medium">£55.66 /mo</div>
+        </div>
+        <div class="bg-[#0a0a0a] border border-[#1f1f1f] rounded-xl p-5 hover:border-[#2e2e2e] transition-colors">
+          <div class="flex items-start gap-3.5">
+            <div class="shrink-0 w-8 h-8 rounded-lg bg-[#111] border border-[#1f1f1f] flex items-center justify-center text-[#888]">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold mb-1">Income Protection (Joe)</div>
+              <p class="text-xs text-[#888] leading-relaxed">Secure Joe's £5,594 monthly earnings if he is unable to work long term due to accident or illness.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Interactive Budget Selection Tabs -->
-    <section class="mb-16">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xs uppercase tracking-widest text-gray-500 font-semibold">Budget Architecture</h2>
-        <div class="flex p-0.5 bg-[#111111] border border-[#222222] rounded-md text-xs">
-          <button id="btn-budget-50" onclick="switchBudget(50)" class="px-3 py-1.5 font-medium rounded-sm transition-all bg-[#222222] text-white">
-            ~£50/mo
-          </button>
-          <button id="btn-budget-100" onclick="switchBudget(100)" class="px-3 py-1.5 font-medium rounded-sm transition-all text-gray-400 hover:text-white">
-            ~£100/mo (Recommended)
-          </button>
+    <!-- ═══ Provider Analysis ═══ -->
+    <section>
+      <div class="relative bg-[#0a0a0a] border border-[#1f1f1f] rounded-xl overflow-hidden">
+        <div class="absolute top-0 right-0 p-5 opacity-[0.06] pointer-events-none text-white">
+          <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         </div>
-      </div>
 
-      <!-- BUDGET CARD ARCHITECTURE -->
-      <div id="budget-content" class="space-y-6">
-        <!-- Content injected dynamically via JavaScript -->
+        <div class="p-6 md:p-8">
+          <div class="text-[10px] uppercase tracking-widest font-semibold text-[#888] mb-2">Provider analysis</div>
+          <h3 class="text-lg md:text-xl font-semibold tracking-tight mb-2">Why we're steering away from Vitality</h3>
+          <p class="text-xs md:text-sm text-[#888] leading-relaxed max-w-2xl mb-6">
+            While Vitality offers premium perks like gym incentives and coffee discounts, their structural financial layout includes a reviewable framework that escalates by 2.5% each year. Over the duration, an unengaged Vitality setup accumulates to <strong class="text-white font-semibold">£30,479</strong>, whereas fixed alternatives like Aviva protect you long-term at <strong class="text-white font-semibold">£26,458</strong> with guaranteed stability.
+          </p>
+
+          <!-- Comparison table -->
+          <div class="border border-[#1f1f1f] rounded-lg overflow-hidden bg-black text-xs tnum">
+            <div class="grid grid-cols-[1.2fr_1fr_1fr] bg-[#111] border-b border-[#1f1f1f] px-4 py-3 text-[10px] font-semibold uppercase tracking-wider text-[#666]">
+              <div>Coverage</div>
+              <div>Vitality (Reviewable)</div>
+              <div class="text-green-400">Aviva (Guaranteed)</div>
+            </div>
+            <div class="grid grid-cols-[1.2fr_1fr_1fr] px-4 py-3 border-b border-[#1f1f1f]">
+              <div class="text-gray-300">Joint Mortgage Life</div>
+              <div class="text-[#888]">£40.21 /mo</div>
+              <div class="text-white font-medium">£37.73 /mo</div>
+            </div>
+            <div class="grid grid-cols-[1.2fr_1fr_1fr] px-4 py-3 border-b border-[#1f1f1f]">
+              <div class="text-gray-300">Income Protection</div>
+              <div class="text-[#888]">£55.70 /mo</div>
+              <div class="text-white font-medium">£55.66 /mo</div>
+            </div>
+            <div class="grid grid-cols-[1.2fr_1fr_1fr] px-4 py-3 border-b border-[#1f1f1f]">
+              <div class="text-gray-300">Premium type</div>
+              <div class="text-[#888]">Reviewable · +2.5%/yr</div>
+              <div class="text-white font-medium">Guaranteed · fixed</div>
+            </div>
+            <div class="grid grid-cols-[1.2fr_1fr_1fr] px-4 py-3 bg-[#0d0d0d]">
+              <div class="text-gray-300 font-medium">Combined monthly</div>
+              <div class="text-[#888]">£95.91</div>
+              <div class="text-white font-semibold">£93.39</div>
+            </div>
+          </div>
+
+          <!-- Savings strip -->
+          <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-1.5 sm:gap-4 bg-green-400/5 border border-green-400/20 rounded-lg px-4 py-3 text-xs">
+            <span class="text-green-400 font-semibold tnum shrink-0">Save £4,021</span>
+            <span class="text-green-200/60 leading-relaxed">in guaranteed premiums over the 30-year term, compared to an unengaged Vitality setup (£26,458 vs £30,479).</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Key Extras Footer Section (Hidden/Shown based on choice) -->
-    <section id="aviva-extras" class="border-t border-[#222222] pt-12 space-y-12">
-      <!-- Unique Feature: Global Treatment -->
+    <!-- ═══ Budget Architecture ═══ -->
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-widest text-[#888]">Budget architecture</h2>
+          <p class="text-xs text-[#666] mt-1">Choose a monthly budget to see recommended policy combinations.</p>
+        </div>
+        <div class="inline-flex p-0.5 bg-[#111] border border-[#1f1f1f] rounded-lg text-xs self-start" role="tablist">
+          <button id="btn-budget-50"  onclick="switchBudget(50)"  aria-pressed="false" class="px-3.5 py-1.5 font-medium rounded-md transition-all text-[#888] hover:text-white">~£50/mo</button>
+          <button id="btn-budget-100" onclick="switchBudget(100)" aria-pressed="true"  class="px-3.5 py-1.5 font-medium rounded-md transition-all bg-[#2e2e2e] text-white">~£100/mo · <span class="text-green-400">Recommended</span></button>
+        </div>
+      </div>
+      <div id="budget-content" class="space-y-5"></div>
+    </section>
+
+    <!-- ═══ Key Extras (Aviva tier only) ═══ -->
+    <section id="aviva-extras" class="border-t border-[#1f1f1f] pt-14 space-y-12">
+
       <div>
-        <div class="flex items-center gap-2 mb-3">
-          <span class="px-2 py-0.5 bg-blue-950 text-blue-400 border border-blue-900 rounded text-[10px] font-semibold uppercase tracking-wider">Industry Hidden Gem</span>
-          <h4 class="text-sm font-semibold text-white">Aviva Global Treatment Explained</h4>
+        <div class="flex flex-wrap items-center gap-2.5 mb-3">
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-full px-2 py-0.5">Industry hidden gem</span>
+          <h4 class="text-sm font-semibold tracking-tight">Aviva Global Treatment, explained</h4>
         </div>
-        <p class="text-xs text-gray-400 leading-relaxed mb-4">
-          Gives you, your partner, and your children automatic access to world-leading clinical specialists for treatments including complex Cancer care, Neurosurgery, Heart procedures, and Organ/Bone Marrow Transplants. Covers up to £1 Million annually for global travel, accommodation, and procedural operations.
+        <p class="text-xs text-[#888] leading-relaxed max-w-2xl mb-4">
+          Gives you, your partner, and your children automatic access to world-leading clinical specialists for treatments including complex cancer care, neurosurgery, heart procedures, and organ/bone marrow transplants. Covers up to £1 million annually for global travel, accommodation, and procedural operations.
         </p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4">
+            <div class="text-base font-bold tnum">£1M</div>
+            <div class="text-[11px] text-[#666] mt-1">Annual cover limit</div>
+          </div>
+          <div class="bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4">
+            <div class="text-base font-bold">Cancer</div>
+            <div class="text-[11px] text-[#666] mt-1">Complex care access</div>
+          </div>
+          <div class="bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4">
+            <div class="text-base font-bold">Neuro &amp; Heart</div>
+            <div class="text-[11px] text-[#666] mt-1">Specialist surgery</div>
+          </div>
+          <div class="bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4">
+            <div class="text-base font-bold">Travel</div>
+            <div class="text-[11px] text-[#666] mt-1">Accommodation included</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Digicare+ Perks -->
       <div>
-        <h4 class="text-xs uppercase tracking-widest text-gray-500 font-semibold mb-4">Included Free Digicare+ Benefits</h4>
-        <div class="grid sm:grid-cols-2 gap-3 text-xs text-gray-400">
-          <div class="flex items-start gap-2.5 bg-[#0b0b0b] p-3 border border-[#1a1a1a] rounded-lg">
-            <span class="text-white">✓</span> <span>Remote 7-day GP & Prescription service (8am - 8pm)</span>
+        <h4 class="text-xs font-semibold uppercase tracking-widest text-[#888] mb-4">Included free — Digicare+ benefits</h4>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="flex items-start gap-2.5 bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4 text-xs text-[#888]">
+            <svg class="w-4 h-4 text-white shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Remote 7-day GP &amp; prescription service (8am–8pm)</span>
           </div>
-          <div class="flex items-start gap-2.5 bg-[#0b0b0b] p-3 border border-[#1a1a1a] rounded-lg">
-            <span class="text-white">✓</span> <span>Annual Health Assessments with medical trace follow-ups</span>
+          <div class="flex items-start gap-2.5 bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4 text-xs text-[#888]">
+            <svg class="w-4 h-4 text-white shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Annual health assessments with medical trace follow-ups</span>
           </div>
-          <div class="flex items-start gap-2.5 bg-[#0b0b0b] p-3 border border-[#1a1a1a] rounded-lg">
-            <span class="text-white">✓</span> <span>24/7 Bupa Registered Nurse Helpline accessibility</span>
+          <div class="flex items-start gap-2.5 bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4 text-xs text-[#888]">
+            <svg class="w-4 h-4 text-white shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>24/7 Bupa-registered nurse helpline access</span>
           </div>
-          <div class="flex items-start gap-2.5 bg-[#0b0b0b] p-3 border border-[#1a1a1a] rounded-lg">
-            <span class="text-white">✓</span> <span>On-demand Nutritionist & Mental Health consultations</span>
+          <div class="flex items-start gap-2.5 bg-[#0a0a0a] border border-[#1f1f1f] rounded-lg p-4 text-xs text-[#888]">
+            <svg class="w-4 h-4 text-white shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>On-demand nutritionist &amp; mental health consultations</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Global CTA -->
-    <footer class="mt-16 pt-8 border-t border-[#222222] flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p class="text-xs text-gray-500">Key facts and validation guides remain appended to your advisory profile.</p>
-      <button class="w-full sm:w-auto px-6 py-2.5 bg-white text-black hover:bg-gray-200 transition-colors text-xs font-semibold rounded-md shadow-sm">
-        Confirm Choice & Proceed
-      </button>
+    <!-- ═══ Footer CTA ═══ -->
+    <footer class="border-t border-[#1f1f1f] pt-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div>
+          <p class="text-xs text-[#a1a1a1] font-medium">Ready to lock in your protection?</p>
+          <p class="text-[11px] text-[#666] mt-1">Key facts and validation guides remain appended to your advisory profile.</p>
+        </div>
+        <button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-black text-xs font-semibold rounded-md hover:bg-[#e5e5e5] transition-colors">
+          Confirm choice &amp; proceed
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+      <div class="mt-8 pt-6 border-t border-[#1f1f1f] flex flex-col sm:flex-row justify-between gap-2 text-[11px] text-[#555]">
+        <span>© 2026 Protection Summary · Figures are illustrative and subject to underwriting.</span>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-gray-300 transition-colors">Key facts</a>
+          <a href="#" class="hover:text-gray-300 transition-colors">Validation guides</a>
+          <a href="#" class="hover:text-gray-300 transition-colors">Privacy</a>
+        </div>
+      </div>
     </footer>
-
   </main>
 
-  <!-- Interactive Logic Script -->
+  <!-- ═══ Interactive Logic ═══ -->
   <script>
-    // Global data container fallback state
+    // ── Global data container (fallback state) ──
     let activeData = {
       name: "Joe & Nina",
       mortgage_amount: "455,399",
       income_amount: "5,594"
     };
 
-    // Parse URL params for dynamic override
+    // ── Parse URL params for dynamic override (?q=base64) ──
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const encoded = urlParams.get('q');
@@ -165,27 +298,102 @@
       console.error("Base64 reading skipped or formatted incorrectly. Displaying configuration defaults.");
     }
 
-    // Set Name
-    document.getElementById('customer-name').innerText = activeData.name;
+    // ── Budget tier data ──
+    const budgetData = {
+      50: {
+        title: "Essentials",
+        sub: "1 policy · covers your mortgage protection objective",
+        totalLabel: "From",
+        total: "£35.59",
+        policies: [
+          { provider: "Zurich", type: "Joint Mortgage Life", desc: "Straightforward joint cover that clears your mortgage if either of you passes away during the term.", price: "£35.59", perks: ["Fixed premium", "30-year term"], recommended: false },
+          { provider: "Aviva", type: "Joint Mortgage Life", desc: "Same guaranteed cover as Zurich, plus free Digicare+ health benefits for the whole family.", price: "£37.73", perks: ["Fixed premium", "Free Digicare+"], recommended: true }
+        ]
+      },
+      100: {
+        title: "Complete Protection",
+        sub: "2 policies · covers both core objectives",
+        totalLabel: "Monthly total",
+        total: "£93.39",
+        policies: [
+          { provider: "Aviva", type: "Joint Mortgage Life", desc: "Guaranteed joint cover that clears your mortgage if either of you passes away during the term.", price: "£37.73", perks: ["Fixed premium", "Free Digicare+"], recommended: false },
+          { provider: "Aviva", type: "Income Protection", desc: "Pays a monthly benefit if Joe is unable to work long term due to accident or illness.", price: "£55.66", perks: ["Fixed premium", "Own-occupation"], recommended: false }
+        ]
+      }
+    };
 
-    // View templates mapping
+    // ── Templates ──
+    function policyCard(p) {
+      const accent = p.recommended
+        ? 'border-[#2e2e2e] ring-1 ring-white/10'
+        : 'border-[#1f1f1f]';
+      const badge = p.recommended
+        ? '<span class="absolute top-4 right-4 text-[10px] font-semibold uppercase tracking-wider text-green-400 bg-green-400/10 border border-green-400/20 rounded-full px-2 py-0.5">Best value</span>'
+        : '';
+      const perks = p.perks.map(x =>
+        `<span class="text-[10px] text-[#888] bg-[#111] border border-[#1f1f1f] rounded-md px-2 py-1">✓ ${x}</span>`
+      ).join('');
+
+      return `
+        <div class="relative bg-black border ${accent} rounded-lg p-4 md:p-5 hover:border-[#2e2e2e] transition-colors">
+          ${badge}
+          <div class="text-[10px] uppercase tracking-widest text-[#666] font-semibold mb-1">${p.provider}</div>
+          <div class="text-sm font-semibold mb-1.5">${p.type}</div>
+          <p class="text-xs text-[#888] leading-relaxed mb-3.5 pr-16">${p.desc}</p>
+          <div class="flex flex-wrap gap-1.5 mb-4">${perks}</div>
+          <div class="flex items-baseline justify-between border-t border-[#1f1f1f] pt-3">
+            <span class="text-[11px] text-[#666]">Premium /month</span>
+            <span class="text-base font-bold tnum">${p.price}</span>
+          </div>
+        </div>`;
+    }
+
+    function renderBudget(tier) {
+      const d = budgetData[tier];
+      const cards = d.policies.map(p => policyCard(p)).join('');
+      return `
+        <div class="rounded-xl border border-[#1f1f1f] bg-[#0a0a0a] overflow-hidden">
+          <div class="px-5 md:px-6 py-4 border-b border-[#1f1f1f] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="text-sm font-semibold tracking-tight">${d.title}</div>
+              <div class="text-xs text-[#666] mt-0.5">${d.sub}</div>
+            </div>
+            <div class="text-left sm:text-right">
+              <div class="text-[10px] uppercase tracking-widest text-[#666] font-semibold">${d.totalLabel}</div>
+              <div class="text-lg font-bold tnum">${d.total}<span class="text-xs text-[#666] font-medium">/mo</span></div>
+            </div>
+          </div>
+          <div class="p-5 md:p-6 grid md:grid-cols-2 gap-4">${cards}</div>
+        </div>`;
+    }
+
+    // ── Budget switcher ──
     function switchBudget(tier) {
       const container = document.getElementById('budget-content');
       const extras = document.getElementById('aviva-extras');
-      
-      const btn50 = document.getElementById('btn-budget-50');
-      const btn100 = document.getElementById('btn-budget-100');
+      const b50 = document.getElementById('btn-budget-50');
+      const b100 = document.getElementById('btn-budget-100');
+      const base = "px-3.5 py-1.5 font-medium rounded-md transition-all";
 
-      if (tier === 50) {
-        // Style Buttons
-        btn50.className = "px-3 py-1.5 font-medium rounded-sm transition-all bg-[#222222] text-white";
-        btn100.className = "px-3 py-1.5 font-medium rounded-sm transition-all text-gray-400 hover:text-white";
-        extras.classList.add('hidden');
+      b50.className  = base + (tier === 50  ? " bg-[#2e2e2e] text-white" : " text-[#888] hover:text-white");
+      b100.className = base + (tier === 100 ? " bg-[#2e2e2e] text-white" : " text-[#888] hover:text-white");
+      b50.setAttribute('aria-pressed', String(tier === 50));
+      b100.setAttribute('aria-pressed', String(tier === 100));
+      extras.classList.toggle('hidden', tier === 50);
 
-        container.innerHTML = `
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-black border border-[#222222] p-5 rounded-lg">
-              <div class="flex justify-between items-start mb-2">
-                <span class="text-xs font-medium text-gray-400">Policy 1 • Zurich</span>
-                <span class="text-sm font-semibold text-white">£35.59/mo</span>
-              </div>
+      container.classList.add('is-fading');
+      setTimeout(() => {
+        container.innerHTML = renderBudget(tier);
+        container.classList.remove('is-fading');
+      }, 150);
+    }
+
+    // ── Init ──
+    document.getElementById('customer-name').textContent = activeData.name;
+    document.getElementById('nav-name').textContent = activeData.name;
+    document.getElementById('stat-mortgage').textContent = '£' + activeData.mortgage_amount;
+    document.getElementById('stat-income').innerHTML = '£' + activeData.income_amount + '<span class="text-xs text-[#666] font-medium">/mo</span>';
+    switchBudget(100);
+  </script>
+</body>
+</html>
