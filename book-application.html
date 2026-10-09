@@ -1,1 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light dark" />
+<title>Book Your Application Appointment · Advantage</title>
+<script>try{var t=localStorage.getItem('adv-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: {
+    base:'var(--bg)', card:'var(--card)', cardalt:'var(--card-alt)', inset:'var(--inset)', row:'var(--row)',
+    line:'var(--line)', lineh:'var(--line-hover)', fg:'var(--fg)', strong:'var(--strong)',
+    sub:'var(--sub)', mut:'var(--mut)', faint:'var(--faint)', em:'var(--accent)',
+    embg:'var(--accent-bg)', emline:'var(--accent-line)', emsoft:'var(--accent-soft)',
+    emsoftfg:'var(--accent-soft-fg)', herosub:'var(--hero-sub)', pill:'var(--border-pill)', wm:'var(--wm)'
+  } } } };
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root, [data-theme="dark"] {
+    --g1:#1CB99A; --g2:#35B5DF;
+    --bg:#000000; --card:#0a0a0a; --card-alt:#000000; --inset:#111111; --row:#0d0d0d;
+    --line:#1f1f1f; --line-hover:#2e2e2e;
+    --fg:#ffffff; --strong:#d4d4d4; --sub:#888888; --mut:#666666; --faint:#555555;
+    --accent:#34d399; --accent-bg:rgba(52,211,153,0.10); --accent-line:rgba(52,211,153,0.25);
+    --accent-soft:rgba(52,211,153,0.06); --accent-soft-fg:rgba(167,243,208,0.65);
+    --hero-sub:#a1a1a1; --border-pill:#333333; --wm:#ffffff;
+    --invert-bg:#ffffff; --invert-fg:#000000; --invert-bg-hover:#e5e5e5;
+    --nav-bg:rgba(0,0,0,0.72);
+    --glow1:rgba(28,185,154,0.12); --glow2:rgba(53,181,223,0.08); --grid:rgba(255,255,255,0.025);
+  }
+  [data-theme="light"] {
+    --bg:#ffffff; --card:#fafafa; --card-alt:#ffffff; --inset:#f5f5f5; --row:#f5f5f5;
+    --line:#ebebeb; --line-hover:#d4d4d4;
+    --fg:#0a0a0a; --strong:#404040; --sub:#666666; --mut:#8f8f8f; --faint:#a3a3a3;
+    --accent:#059669; --accent-bg:rgba(5,150,105,0.08); --accent-line:rgba(5,150,105,0.25);
+    --accent-soft:rgba(5,150,105,0.05); --accent-soft-fg:rgba(6,95,70,0.75);
+    --hero-sub:#525252; --border-pill:#d4d4d4; --wm:#000000;
+    --invert-bg:#000000; --invert-fg:#ffffff; --invert-bg-hover:#1f1f1f;
+    --nav-bg:rgba(255,255,255,0.8);
+    --glow1:rgba(28,185,154,0.10); --glow2:rgba(53,181,223,0.07); --grid:rgba(0,0,0,0.035);
+  }
+  html { scroll-behavior:smooth; font-size:16px; }
+  @media (min-width:1024px) { html { font-size:17.6px; } }
+  body { font-family:'Inter',ui-sans-serif,system-ui,sans-serif; font-feature-settings:"cv02","cv03","cv04","cv11"; }
+  ::selection { background:rgba(28,185,154,0.28); }
+  .tnum { font-variant-numeric:tabular-nums; }
+  .grad-text { background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .grad-bg { background:linear-gradient(90deg,var(--g1),var(--g2)); }
+  .grad-cta { background:linear-gradient(115deg,#0E9F86 0%,#1CB99A 45%,#35B5DF 100%); }
+  .grad-border { border:1px solid transparent; background:linear-gradient(var(--card),var(--card)) padding-box, linear-gradient(120deg,var(--g1),var(--g2)) border-box; }
+  .glass { background:var(--nav-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  .ambient { background:radial-gradient(ellipse 80% 45% at 50% -10%, var(--glow1), transparent 60%), radial-gradient(ellipse 55% 35% at 80% 0%, var(--glow2), transparent 60%); }
+  .grid-lines { background-image:linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px); background-size:72px 72px; -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%); mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%); }
+  .toc-link { display:block; position:relative; padding:.4rem .75rem .4rem 1.25rem; font-size:.8125rem; color:var(--sub); transition:color .15s; }
+  .toc-link:hover { color:var(--strong); }
+  .toc-link.active { color:var(--fg); }
+  .toc-link::before { content:""; position:absolute; left:-1px; top:7px; bottom:7px; width:2px; border-radius:2px; background:transparent; transition:background .15s; }
+  .toc-link.active::before { background:linear-gradient(180deg,var(--g1),var(--g2)); }
+  .toc-chip { flex:none; font-size:11px; font-weight:500; color:var(--sub); border:1px solid var(--line); background:var(--card); padding:5px 12px; border-radius:999px; transition:all .15s; }
+  .toc-chip:hover { color:var(--fg); }
+  .toc-chip.active { background:var(--invert-bg); color:var(--invert-fg); border-color:var(--invert-bg); }
+  .btn-invert { background:var(--invert-bg); color:var(--invert-fg); }
+  .btn-invert:hover { background:var(--invert-bg-hover); }
+  #progress { position:fixed; top:0; left:0; height:2px; width:100%; z-index:60; transform-origin:0 50%; transform:scaleX(0); background:linear-gradient(90deg,var(--g1),var(--g2)); }
+  details.faq summary::-webkit-details-marker { display:none; }
+  details.faq .chev { transition:transform .2s; }
+  details.faq[open] .chev { transform:rotate(45deg); }
+  details.faq[open] summary { color:var(--fg); }
+  #booking-loading { transition:opacity .3s ease; }
+  #booking-loading.is-done { opacity:0; pointer-events:none; }
+  button:focus-visible, a:focus-visible, summary:focus-visible { outline:1px solid var(--sub); outline-offset:2px; border-radius:6px; }
+</style>
+</head>
+<body class="bg-base text-fg min-h-screen antialiased">
+<div id="progress"></div>
+<div class="fixed inset-0 -z-10 pointer-events-none">
+  <div class="absolute inset-0 ambient"></div>
+  <div class="absolute inset-0 grid-lines"></div>
+</div>
 
+<!-- ═══ Nav ═══ -->
+<header class="sticky top-0 z-50 border-b border-line glass">
+  <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded-full grad-bg flex items-center justify-center shadow-[0_0_16px_rgba(28,185,154,.35)]">
+        <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5 20.5 20h-4.2L12 11.8 7.7 20H3.5L12 3.5z"/></svg>
+      </div>
+      <span class="text-sm font-bold tracking-tight text-fg">Advantage</span>
+      <span class="hidden sm:inline text-xs text-mut border-l border-line pl-2.5 ml-1">Application Appointment</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle" aria-label="Toggle colour theme" class="w-8 h-8 flex items-center justify-center rounded-md border border-line text-sub hover:text-fg hover:border-lineh transition-colors">
+        <svg id="icon-sun" class="w-4 h-4" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="icon-moon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="#book" class="btn-invert text-xs font-semibold rounded-md px-3.5 py-2 transition-colors">Pick a time</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Mobile chips ═══ -->
+<div class="lg:hidden sticky top-14 z-40 glass border-b border-line">
+  <div class="mx-auto max-w-[1400px] px-4 flex gap-2 overflow-x-auto py-2.5 [scrollbar-width:none]">
+    <a href="#overview" data-toc="overview" class="toc-chip active">Overview</a>
+    <a href="#book" data-toc="book" class="toc-chip">Book a time</a>
+    <a href="#expect" data-toc="expect" class="toc-chip">What to expect</a>
+    <a href="#prepare" data-toc="prepare" class="toc-chip">How to prepare</a>
+    <a href="#faq" data-toc="faq" class="toc-chip">FAQ</a>
+    <a href="#contact" data-toc="contact" class="toc-chip">Contact</a>
+  </div>
+</div>
+
+<div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+  <div class="flex gap-10">
+
+    <!-- ═══ Sidebar ═══ -->
+    <aside class="hidden lg:block w-56 shrink-0 sticky top-24 self-start">
+      <div class="max-h-[calc(100vh-8rem)] overflow-y-auto pb-8">
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-faint mb-3 pl-4">On this page</p>
+        <nav class="border-l border-line space-y-0.5">
+          <a href="#overview" data-toc="overview" class="toc-link active">Overview</a>
+          <a href="#book" data-toc="book" class="toc-link">Book a time</a>
+          <a href="#expect" data-toc="expect" class="toc-link">What to expect</a>
+          <a href="#prepare" data-toc="prepare" class="toc-link">How to prepare</a>
+          <a href="#faq" data-toc="faq" class="toc-link">FAQ</a>
+          <a href="#contact" data-toc="contact" class="toc-link">Contact</a>
+        </nav>
+        <div class="mt-8 grad-border rounded-xl p-4">
+          <p class="text-xs font-semibold text-fg">Prefer to talk?</p>
+          <p class="text-[11px] text-sub mt-1 leading-relaxed">Any queries in the meantime, just get in touch — we'll book it in for you.</p>
+          <a href="#contact" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white grad-bg px-3 py-1.5 rounded-md">Contact details</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══ Main ═══ -->
+    <main class="min-w-0 flex-1 py-10 md:py-16 space-y-16 md:space-y-24">
+
+      <!-- ── Overview ── -->
+      <section id="overview" class="scroll-mt-28">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-[11px] font-medium bg-inset border border-pill text-sub mb-5">
+          <span class="w-1.5 h-1.5 rounded-full grad-bg animate-pulse"></span>
+          Application appointment · Live diary below
+        </div>
+        <h1 class="text-3xl md:text-5xl font-bold tracking-tighter leading-[1.08] mb-4 text-fg">
+          Book your <span class="grad-text">application appointment</span>.
+        </h1>
+        <p class="text-sm md:text-base text-herosub max-w-2xl leading-relaxed">
+          <span id="customer-greeting">Let's get you booked in.</span> This is your next appointment with
+          <strong class="text-fg font-semibold">Laurence</strong> regarding the new protection options you've been
+          discussing with him, on behalf of your mortgage adviser. You'll need around 40 minutes when you are both free —
+          Laurence will then assist in getting everything ready in time for your property completion.
+        </p>
+
+        <div class="mt-9 grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-line border border-line rounded-xl bg-card overflow-hidden">
+          <div class="p-4 md:p-5">
+            <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Duration</div>
+            <div class="text-lg md:text-xl font-bold text-fg">~40 min</div>
+            <div class="text-[11px] text-mut mt-1">When you are both free</div>
+          </div>
+          <div class="p-4 md:p-5">
+            <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Stage</div>
+            <div class="text-lg md:text-xl font-bold grad-text">Application</div>
+            <div class="text-[11px] text-mut mt-1">Options in full detail</div>
+          </div>
+          <div class="p-4 md:p-5">
+            <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Goal</div>
+            <div class="text-lg md:text-xl font-bold text-fg">Completion-ready</div>
+            <div class="text-[11px] text-mut mt-1">Everything in place for your move</div>
+          </div>
+          <div class="p-4 md:p-5">
+            <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Confirmation</div>
+            <div class="text-lg md:text-xl font-bold text-fg">Instant</div>
+            <div class="text-[11px] text-mut mt-1">With reschedule link</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Book (the embed) ── -->
+      <section id="book" class="scroll-mt-28">
+        <div class="relative bg-card border border-line rounded-xl overflow-hidden">
+          <div class="px-5 md:px-6 py-4 border-b border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-sm font-semibold tracking-tight text-fg">Choose a time that suits you</h2>
+              <p class="text-xs text-mut mt-0.5">Pick the application appointment (~40 min), then any open slot.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full grad-bg animate-pulse"></span>
+              <span class="text-[11px] text-em font-medium">Live availability</span>
+            </div>
+          </div>
+
+          <!-- ADJUST: iframe height. Increase h-[1100px] / lg:h-[1300px] if the calendar looks cut off. -->
+          <div class="relative">
+            <div id="booking-loading" class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-card">
+              <svg class="w-6 h-6 text-em animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              <p class="text-xs text-sub">Loading live availability…</p>
+            </div>
+            <iframe id="booking-frame" title="Advantage booking calendar" class="w-full h-[1100px] lg:h-[1300px] block bg-card" style="border:0" loading="lazy" allowfullscreen></iframe>
+          </div>
+
+          <!-- Auto-shown fallback if the embed cannot load -->
+          <div id="booking-fallback" class="hidden mx-5 md:mx-6 my-4 bg-row border border-line rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold text-fg">Diary not showing?</p>
+              <p class="text-[11px] text-sub mt-0.5 leading-relaxed">Some browsers or cookie settings block embedded calendars. Open it in a new tab instead — same availability, one extra click.</p>
+            </div>
+            <a id="booking-open" href="#" target="_blank" rel="noopener" class="btn-invert shrink-0 text-xs font-semibold rounded-md px-3.5 py-2 transition-colors inline-flex items-center justify-center gap-1.5">
+              Open booking page
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+
+          <div class="px-5 md:px-6 py-3 border-t border-line flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <p class="text-[11px] text-faint">Secure booking by Microsoft Bookings · your details are used only to arrange this appointment.</p>
+            <a id="booking-open-inline" href="#" target="_blank" rel="noopener" class="text-[11px] text-em hover:underline font-medium">Open in new tab →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── What to expect ── -->
+      <section id="expect" class="scroll-mt-28">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-sub mb-6">From booking to completion — what to expect</h2>
+        <ol class="relative border-l border-line ml-2 space-y-8">
+          <li class="ml-6">
+            <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">1</span>
+            <h5 class="text-sm font-semibold mb-1 text-fg">Pick a time</h5>
+            <p class="text-xs text-sub leading-relaxed max-w-xl">Use the live diary above — choose the ~40-minute application appointment, then any open slot that suits you both.</p>
+          </li>
+          <li class="ml-6">
+            <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">2</span>
+            <h5 class="text-sm font-semibold mb-1 text-fg">Instant confirmation</h5>
+            <p class="text-xs text-sub leading-relaxed max-w-xl">You'll get a confirmation email immediately with your meeting link, calendar invite, and a reschedule link in case plans change.</p>
+          </li>
+          <li class="ml-6">
+            <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">3</span>
+            <h5 class="text-sm font-semibold mb-1 text-fg">The appointment (~40 min)</h5>
+            <p class="text-xs text-sub leading-relaxed max-w-xl">Laurence will talk you through the different options again in more detail, then complete the application itself with you — so nothing holds up your move.</p>
+          </li>
+          <li class="ml-6">
+            <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">4</span>
+            <h5 class="text-sm font-semibold mb-1 text-fg">Ready for completion</h5>
+            <p class="text-xs text-sub leading-relaxed max-w-xl">Your application goes to the insurer for underwriting — we chase it, keep you posted at every step, and confirm everything is in place ahead of your property completion.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ── How to prepare ── -->
+      <section id="prepare" class="scroll-mt-28">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-sub mb-5">How to prepare</h2>
+        <p class="text-xs text-sub max-w-2xl leading-relaxed mb-5">Nothing is mandatory, but having these to hand means the application can be completed in one sitting — keeping your completion date safe.</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="flex items-start gap-2.5 bg-card border border-line rounded-lg p-4 text-xs text-sub">
+            <span class="shrink-0 mt-0.5 w-4 h-4 rounded-full grad-bg flex items-center justify-center"><svg class="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span>Your mortgage and property details</span>
+          </div>
+          <div class="flex items-start gap-2.5 bg-card border border-line rounded-lg p-4 text-xs text-sub">
+            <span class="shrink-0 mt-0.5 w-4 h-4 rounded-full grad-bg flex items-center justify-center"><svg class="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span>Household monthly take-home figure (after tax)</span>
+          </div>
+          <div class="flex items-start gap-2.5 bg-card border border-line rounded-lg p-4 text-xs text-sub">
+            <span class="shrink-0 mt-0.5 w-4 h-4 rounded-full grad-bg flex items-center justify-center"><svg class="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span>Rough health notes — height, weight, smoker status — for underwriting</span>
+          </div>
+          <div class="flex items-start gap-2.5 bg-card border border-line rounded-lg p-4 text-xs text-sub">
+            <span class="shrink-0 mt-0.5 w-4 h-4 rounded-full grad-bg flex items-center justify-center"><svg class="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span>Your preferred direct-debit date for the premiums</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FAQ ── -->
+      <section id="faq" class="scroll-mt-28">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-sub mb-5">Booking questions</h2>
+        <div class="space-y-2.5">
+          <details class="faq bg-card border border-line rounded-lg group" open>
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Why does this appointment take 40 minutes?<span class="chev text-mut text-lg leading-none">+</span></summary>
+            <p class="px-5 pb-4 text-xs text-sub leading-relaxed">This is where we move from comparing options to putting your application in place — a full walkthrough of your chosen cover, the disclosure questions, and the insurer paperwork. Doing it properly now is what keeps your completion date safe.</p>
+          </details>
+          <details class="faq bg-card border border-line rounded-lg group">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Do we both need to attend?<span class="chev text-mut text-lg leading-none">+</span></summary>
+            <p class="px-5 pb-4 text-xs text-sub leading-relaxed">Yes, if possible — the application covers joint cover decisions and disclosure for both of you. If one of you genuinely can't join, tell us when booking and we'll work out the best way to handle it.</p>
+          </details>
+          <details class="faq bg-card border border-line rounded-lg group">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Can we reschedule?<span class="chev text-mut text-lg leading-none">+</span></summary>
+            <p class="px-5 pb-4 text-xs text-sub leading-relaxed">Yes — the reschedule link is in your confirmation email. The only ask: if you're close to your completion date, let us know as soon as possible so we can protect your timeline.</p>
+          </details>
+          <details class="faq bg-card border border-line rounded-lg group">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">What happens after the appointment?<span class="chev text-mut text-lg leading-none">+</span></summary>
+            <p class="px-5 pb-4 text-xs text-sub leading-relaxed">Your application goes to the insurer for underwriting. We chase it, keep you posted at every step, and confirm once everything is in place ahead of completion.</p>
+          </details>
+          <details class="faq bg-card border border-line rounded-lg group">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Can't find a time that works?<span class="chev text-mut text-lg leading-none">+</span></summary>
+            <p class="px-5 pb-4 text-xs text-sub leading-relaxed">The diary only shows pre-set availability. If nothing fits — especially with a completion date involved — get in touch urgently and we'll arrange it manually.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- ── Contact ── -->
+      <section id="contact" class="scroll-mt-28">
+        <div class="grad-cta rounded-2xl p-7 md:p-10 relative overflow-hidden">
+          <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none text-black">
+            <svg width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-2 leading-tight">Queries before<br />your move?</h3>
+          <p class="text-sm text-white/80 mb-6 max-w-md">With completion dates involved, we're happy to talk first — get in touch and we'll make sure everything stays on track.</p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <!-- ADJUST: replace phone + email placeholders with your real details -->
+            <a href="tel:+440000000000" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-sm font-semibold rounded-full hover:bg-[#1a1a1a] transition-colors shadow-lg">Call us today</a>
+            <a href="mailto:hello@advantage.co.uk" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur text-white text-sm font-semibold rounded-full hover:bg-white/30 transition-colors">Email us</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Footer ── -->
+      <footer class="border-t border-line pt-8 pb-4">
+        <div class="flex flex-col sm:flex-row justify-between gap-3 text-[11px] text-faint">
+          <div class="space-y-1">
+            <p>© 2026 Advantage · Award-winning mortgage &amp; insurance advice</p>
+            <p>Appointments arranged via Microsoft Bookings. Advice relates to UK protection products only.</p>
+          </div>
+          <div class="flex gap-4 self-start">
+            <a href="#overview" class="hover:text-strong transition-colors">Back to top</a>
+            <a href="#" class="hover:text-strong transition-colors">Key facts</a>
+            <a href="#" class="hover:text-strong transition-colors">Privacy</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  // ================= EDIT ZONE 1: BOOKING URL =================
+  const BOOKING_URL = "https://bookings.cloud.microsoft/owa/calendar/AdvantageProtection@NETORGFT5872714.onmicrosoft.com/bookings/?ismsaljsauthenabled";
+  // ================= END EDIT ZONE 1 =================
+
+  // Optional greeting personalisation (page stays generic without it):
+  //   ?name=Natalie and David   or   ?q=base64(JSON with "name")
+  let clientName = "";
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get('q');
+    if (q) {
+      var d = JSON.parse(atob(q));
+      if (d.name) clientName = d.name;
+    } else if (params.get('name')) {
+      clientName = params.get('name');
+    }
+  } catch (e) {
+    console.error("Invalid personalisation data. Showing generic greeting.");
+  }
+
+  // ===== BOOKING EMBED (do not modify) =====
+  var bookingFrame = document.getElementById('booking-frame');
+  var bookingLoading = document.getElementById('booking-loading');
+  var bookingFallback = document.getElementById('booking-fallback');
+  var bookingLoaded = false;
+
+  bookingFrame.src = BOOKING_URL;
+  document.getElementById('booking-open').href = BOOKING_URL;
+  document.getElementById('booking-open-inline').href = BOOKING_URL;
+
+  bookingFrame.addEventListener('load', function () {
+    bookingLoaded = true;
+    setTimeout(function () { bookingLoading.classList.add('is-done'); }, 400);
+  });
+  setTimeout(function () {
+    if (!bookingLoaded) {
+      bookingLoading.classList.add('is-done');
+      bookingFallback.classList.remove('hidden');
+    }
+  }, 8000);
+
+  // ===== SCROLL-SPY + PROGRESS (do not modify) =====
+  const tocLinks = Array.prototype.slice.call(document.querySelectorAll('[data-toc]'));
+  const secs = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  const progress = document.getElementById('progress');
+  function onScroll() {
+    const probe = 160;
+    let currentId = secs.length ? secs[0].id : null;
+    secs.forEach(function (s) {
+      if (s.offsetParent !== null && s.getBoundingClientRect().top <= probe) currentId = s.id;
+    });
+    if (secs.length && window.innerHeight + window.scrollY >= document.body.offsetHeight - 40) {
+      currentId = secs[secs.length - 1].id;
+    }
+    tocLinks.forEach(function (l) { l.classList.toggle('active', l.dataset.toc === currentId); });
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    progress.style.transform = 'scaleX(' + (max ? h.scrollTop / max : 0) + ')';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  // ===== THEME (do not modify) =====
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('adv-theme', t); } catch (e) {}
+    var sun = document.getElementById('icon-sun');
+    var moon = document.getElementById('icon-moon');
+    if (sun) sun.style.display = (t === 'light') ? 'none' : 'block';
+    if (moon) moon.style.display = (t === 'light') ? 'block' : 'none';
+  }
+  (function () {
+    var t = 'light';
+    try { var s = localStorage.getItem('adv-theme'); if (s === 'light' || s === 'dark') t = s; } catch (e) {}
+    setTheme(t);
+  })();
+  var themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      setTheme(next);
+    });
+  }
+
+  // ===== INIT (do not modify) =====
+  var greeting = document.getElementById('customer-greeting');
+  greeting.textContent = clientName
+    ? 'Hello, ' + clientName + ' \u2014 let\u2019s get you booked in.'
+    : 'Let\u2019s get you booked in.';
+  onScroll();
+</script>
+</body>
+</html>
