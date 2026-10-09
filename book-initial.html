@@ -1,1 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light dark" />
+<title>Your Initial Appointment · Advantage</title>
+<script>try{var t=localStorage.getItem('adv-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: {
+    base:'var(--bg)', card:'var(--card)', cardalt:'var(--card-alt)', inset:'var(--inset)', row:'var(--row)',
+    line:'var(--line)', lineh:'var(--line-hover)', fg:'var(--fg)', strong:'var(--strong)',
+    sub:'var(--sub)', mut:'var(--mut)', faint:'var(--faint)', em:'var(--accent)',
+    embg:'var(--accent-bg)', emline:'var(--accent-line)', emsoft:'var(--accent-soft)',
+    emsoftfg:'var(--accent-soft-fg)', herosub:'var(--hero-sub)', pill:'var(--border-pill)', wm:'var(--wm)'
+  } } } };
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root, [data-theme="dark"] {
+    --g1:#1CB99A; --g2:#35B5DF;
+    --bg:#000000; --card:#0a0a0a; --card-alt:#000000; --inset:#111111; --row:#0d0d0d;
+    --line:#1f1f1f; --line-hover:#2e2e2e;
+    --fg:#ffffff; --strong:#d4d4d4; --sub:#888888; --mut:#666666; --faint:#555555;
+    --accent:#34d399; --accent-bg:rgba(52,211,153,0.10); --accent-line:rgba(52,211,153,0.25);
+    --accent-soft:rgba(52,211,153,0.06); --accent-soft-fg:rgba(167,243,208,0.65);
+    --hero-sub:#a1a1a1; --border-pill:#333333; --wm:#ffffff;
+    --invert-bg:#ffffff; --invert-fg:#000000; --invert-bg-hover:#e5e5e5;
+    --nav-bg:rgba(0,0,0,0.72);
+    --glow1:rgba(28,185,154,0.12); --glow2:rgba(53,181,223,0.08); --grid:rgba(255,255,255,0.025);
+  }
+  [data-theme="light"] {
+    --bg:#ffffff; --card:#fafafa; --card-alt:#ffffff; --inset:#f5f5f5; --row:#f5f5f5;
+    --line:#ebebeb; --line-hover:#d4d4d4;
+    --fg:#0a0a0a; --strong:#404040; --sub:#666666; --mut:#8f8f8f; --faint:#a3a3a3;
+    --accent:#059669; --accent-bg:rgba(5,150,105,0.08); --accent-line:rgba(5,150,105,0.25);
+    --accent-soft:rgba(5,150,105,0.05); --accent-soft-fg:rgba(6,95,70,0.75);
+    --hero-sub:#525252; --border-pill:#d4d4d4; --wm:#000000;
+    --invert-bg:#000000; --invert-fg:#ffffff; --invert-bg-hover:#1f1f1f;
+    --nav-bg:rgba(255,255,255,0.8);
+    --glow1:rgba(28,185,154,0.10); --glow2:rgba(53,181,223,0.07); --grid:rgba(0,0,0,0.035);
+  }
+  html { scroll-behavior:smooth; font-size:16px; }
+  @media (min-width:1024px) { html { font-size:17.6px; } }
+  body { font-family:'Inter',ui-sans-serif,system-ui,sans-serif; font-feature-settings:"cv02","cv03","cv04","cv11"; }
+  ::selection { background:rgba(28,185,154,0.28); }
+  .tnum { font-variant-numeric:tabular-nums; }
+  .grad-text { background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .grad-bg { background:linear-gradient(90deg,var(--g1),var(--g2)); }
+  .grad-cta { background:linear-gradient(115deg,#0E9F86 0%,#1CB99A 45%,#35B5DF 100%); }
+  .grad-border { border:1px solid transparent; background:linear-gradient(var(--card),var(--card)) padding-box, linear-gradient(120deg,var(--g1),var(--g2)) border-box; }
+  .glass { background:var(--nav-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  .ambient { background:radial-gradient(ellipse 80% 45% at 50% -10%, var(--glow1), transparent 60%), radial-gradient(ellipse 55% 35% at 80% 0%, var(--glow2), transparent 60%); }
+  .grid-lines { background-image:linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px); background-size:72px 72px; -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%); mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%); }
+  .btn-invert { background:var(--invert-bg); color:var(--invert-fg); }
+  .btn-invert:hover { background:var(--invert-bg-hover); }
+  #progress { position:fixed; top:0; left:0; height:2px; width:100%; z-index:60; transform-origin:0 50%; transform:scaleX(0); background:linear-gradient(90deg,var(--g1),var(--g2)); }
+  details.faq summary::-webkit-details-marker { display:none; }
+  details.faq .chev { transition:transform .2s; }
+  details.faq[open] .chev { transform:rotate(45deg); }
+  details.faq[open] summary { color:var(--fg); }
+  #booking-loading { transition:opacity .3s ease; }
+  #booking-loading.is-done { opacity:0; pointer-events:none; }
+  button:focus-visible, a:focus-visible, summary:focus-visible { outline:1px solid var(--sub); outline-offset:2px; border-radius:6px; }
+</style>
+</head>
+<body class="bg-base text-fg min-h-screen antialiased">
+<div id="progress"></div>
+<div class="fixed inset-0 -z-10 pointer-events-none">
+  <div class="absolute inset-0 ambient"></div>
+  <div class="absolute inset-0 grid-lines"></div>
+</div>
 
+<!-- ═══ Nav ═══ -->
+<header class="sticky top-0 z-50 border-b border-line glass">
+  <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded-full grad-bg flex items-center justify-center shadow-[0_0_16px_rgba(28,185,154,.35)]">
+        <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5 20.5 20h-4.2L12 11.8 7.7 20H3.5L12 3.5z"/></svg>
+      </div>
+      <span class="text-sm font-bold tracking-tight text-fg">Advantage</span>
+      <span class="hidden sm:inline text-xs text-mut border-l border-line pl-2.5 ml-1">Initial Appointment</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle" aria-label="Toggle colour theme" class="w-8 h-8 flex items-center justify-center rounded-md border border-line text-sub hover:text-fg hover:border-lineh transition-colors">
+        <svg id="icon-sun" class="w-4 h-4" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="icon-moon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="#book" class="btn-invert text-xs font-semibold rounded-md px-3.5 py-2 transition-colors">Pick a time</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Main (centred letter + calendar) ═══ -->
+<main class="mx-auto max-w-[1000px] px-4 sm:px-6 py-10 md:py-16 space-y-14 md:space-y-20">
+
+  <!-- ── The letter ── -->
+  <section id="overview">
+    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-[11px] font-medium bg-inset border border-pill text-sub mb-5">
+      <span class="w-1.5 h-1.5 rounded-full grad-bg animate-pulse"></span>
+      Your initial protection appointment · Live diary below
+    </div>
+    <h1 class="text-3xl md:text-5xl font-bold tracking-tighter leading-[1.08] mb-5">
+      Hello, <span class="grad-text fill-name">Tenisha &amp; Michael</span>.
+    </h1>
+
+    <div class="grad-border rounded-xl p-6 md:p-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-5 opacity-[0.06] pointer-events-none text-wm">
+        <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+
+      <p class="text-xs md:text-sm text-sub leading-relaxed mb-4">
+        I hope you are both well. I tried calling earlier on behalf of your adviser,
+        <span class="fill-referrer font-medium text-fg">Steve Morris</span>.
+        <span class="fill-referrer">Steve</span> has asked me to get in touch to see if you are available soon for your
+        initial appointment regarding the protection advice for your mortgage.
+      </p>
+      <p class="text-xs md:text-sm text-sub leading-relaxed mb-4">
+        I'll be booking you in with our protection adviser, <span class="fill-adviser font-medium text-fg">Laurence</span>.
+        Rather than wait for another call, you can pick whichever slot suits you directly from
+        <span class="fill-adviser">'s</span> live diary below — times update in real time.
+      </p>
+      <p class="text-xs md:text-sm text-sub leading-relaxed mb-4">
+        <span class="fill-adviser">Laurence</span> will give you a clear overview of your options and fully review any
+        existing cover you may have. The appointment typically takes about 10–15 minutes. Afterwards, you'll receive a
+        summary of everything discussed, including a tailored recommendation on the most cost-effective and
+        comprehensive providers.
+      </p>
+      <p class="text-xs md:text-sm text-sub leading-relaxed">Any queries in the meantime, please let us know.</p>
+
+      <div class="mt-6 pt-5 border-t border-line flex items-center gap-3">
+        <span class="w-9 h-9 rounded-full grad-bg flex items-center justify-center text-sm font-bold text-black shrink-0">A</span>
+        <div>
+          <p class="text-xs font-semibold text-fg">The Advantage Protection team</p>
+          <p class="text-[11px] text-mut">Booking on behalf of <span class="fill-adviser">Laurence</span>, Protection Adviser</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- At-a-glance -->
+    <div class="mt-6 grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-line border border-line rounded-xl bg-card overflow-hidden">
+      <div class="p-4">
+        <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Duration</div>
+        <div class="text-lg font-bold text-fg">10–15 min</div>
+        <div class="text-[11px] text-mut mt-1">Clear overview, never rushed</div>
+      </div>
+      <div class="p-4">
+        <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Cost</div>
+        <div class="text-lg font-bold grad-text">Free</div>
+        <div class="text-[11px] text-mut mt-1">No obligation whatsoever</div>
+      </div>
+      <div class="p-4">
+        <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Format</div>
+        <div class="text-lg font-bold text-fg">Video or phone</div>
+        <div class="text-[11px] text-mut mt-1">Link sent by email</div>
+      </div>
+      <div class="p-4">
+        <div class="text-[10px] uppercase tracking-widest text-mut font-semibold mb-1.5">Afterwards</div>
+        <div class="text-lg font-bold text-fg">Written summary</div>
+        <div class="text-[11px] text-mut mt-1">With tailored recommendation</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The calendar ── -->
+  <section id="book" class="scroll-mt-28">
+    <div class="relative bg-card border border-line rounded-xl overflow-hidden">
+      <div class="px-5 md:px-6 py-4 border-b border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-sm font-semibold tracking-tight text-fg">Select a time from the live diary</h2>
+          <p class="text-xs text-mut mt-0.5">Pick the 10–15 minute initial appointment, then any open slot.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full grad-bg animate-pulse"></span>
+          <span class="text-[11px] text-em font-medium">Live availability</span>
+        </div>
+      </div>
+
+      <!-- ADJUST: increase h-[1100px] if the calendar looks cut off -->
+      <div class="relative">
+        <div id="booking-loading" class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-card">
+          <svg class="w-6 h-6 text-em animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <p class="text-xs text-sub">Loading the diary…</p>
+        </div>
+        <iframe id="booking-frame" title="Advantage booking calendar" class="w-full h-[1100px] lg:h-[1300px] block bg-card" style="border:0" loading="lazy" allowfullscreen></iframe>
+      </div>
+
+      <div id="booking-fallback" class="hidden mx-5 md:mx-6 my-4 bg-row border border-line rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold text-fg">Diary not showing?</p>
+          <p class="text-[11px] text-sub mt-0.5 leading-relaxed">Some browsers or cookie settings block embedded calendars. Open it in a new tab instead — same times, one extra click.</p>
+        </div>
+        <a id="booking-open" href="#" target="_blank" rel="noopener" class="btn-invert shrink-0 text-xs font-semibold rounded-md px-3.5 py-2 transition-colors inline-flex items-center justify-center gap-1.5">
+          Open diary
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <div class="px-5 md:px-6 py-3 border-t border-line">
+        <p class="text-[11px] text-faint">Secure booking by Microsoft Bookings · your details are used only to arrange this appointment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What to expect ── -->
+  <section id="expect" class="scroll-mt-28">
+    <h2 class="text-xs font-semibold uppercase tracking-widest text-sub mb-6">What happens next</h2>
+    <ol class="relative border-l border-line ml-2 space-y-8">
+      <li class="ml-6">
+        <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">1</span>
+        <h5 class="text-sm font-semibold mb-1 text-fg">Pick a slot</h5>
+        <p class="text-xs text-sub leading-relaxed max-w-xl">Choose any open time from the live diary above — mornings, evenings and weekends included where shown.</p>
+      </li>
+      <li class="ml-6">
+        <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">2</span>
+        <h5 class="text-sm font-semibold mb-1 text-fg">Instant confirmation</h5>
+        <p class="text-xs text-sub leading-relaxed max-w-xl">You'll get an email straight away with the meeting link and a reschedule link in case plans change.</p>
+      </li>
+      <li class="ml-6">
+        <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">3</span>
+        <h5 class="text-sm font-semibold mb-1 text-fg">The appointment (10–15 min)</h5>
+        <p class="text-xs text-sub leading-relaxed max-w-xl"><span class="fill-adviser">Laurence</span> gives you a clear overview of your options and fully reviews any existing cover you may have.</p>
+      </li>
+      <li class="ml-6">
+        <span class="absolute -left-[11px] w-[22px] h-[22px] rounded-full grad-bg flex items-center justify-center text-[10px] font-bold text-black">4</span>
+        <h5 class="text-sm font-semibold mb-1 text-fg">Your summary &amp; recommendation</h5>
+        <p class="text-xs text-sub leading-relaxed max-w-xl">Emailed afterwards — everything discussed, plus a tailored recommendation on the most cost-effective and comprehensive providers.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section id="faq" class="scroll-mt-28">
+    <h2 class="text-xs font-semibold uppercase tracking-widest text-sub mb-5">Quick questions</h2>
+    <div class="space-y-2.5">
+      <details class="faq bg-card border border-line rounded-lg group" open>
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Do we both need to attend?<span class="chev text-mut text-lg leading-none">+</span></summary>
+        <p class="px-5 pb-4 text-xs text-sub leading-relaxed">Ideally, yes — mortgage protection is usually set up jointly, and decisions about the cover basis and amounts are best made together. If one of you can't make it, the appointment still works and we'll follow up with the summary.</p>
+      </details>
+      <details class="faq bg-card border border-line rounded-lg group">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Is the appointment really free?<span class="chev text-mut text-lg leading-none">+</span></summary>
+        <p class="px-5 pb-4 text-xs text-sub leading-relaxed">Yes — completely free with no obligation. We're paid by insurers only if you choose to proceed with a recommendation, and we'll always disclose that clearly.</p>
+      </details>
+      <details class="faq bg-card border border-line rounded-lg group">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Can we reschedule after booking?<span class="chev text-mut text-lg leading-none">+</span></summary>
+        <p class="px-5 pb-4 text-xs text-sub leading-relaxed">Anytime, free of charge — your confirmation email contains a reschedule link. Just pick a new slot and the diary updates instantly.</p>
+      </details>
+      <details class="faq bg-card border border-line rounded-lg group">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-strong list-none">Nothing suits us in the diary<span class="chev text-mut text-lg leading-none">+</span></summary>
+        <p class="px-5 pb-4 text-xs text-sub leading-relaxed">No problem — the diary only shows pre-set availability. Get in touch and we'll arrange a time manually that works for you.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section id="contact" class="scroll-mt-28">
+    <div class="grad-cta rounded-2xl p-7 md:p-10 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none text-black">
+        <svg width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-2 leading-tight">Any queries in<br />the meantime?</h3>
+      <p class="text-sm text-white/80 mb-6 max-w-md">Just ask — we booked <span class="fill-referrer font-medium text-white">Steve Morris</span>' clients in every day and are happy to talk it through first.</p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <!-- ADJUST: replace phone + email placeholders with your real details -->
+        <a href="tel:+440000000000" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-sm font-semibold rounded-full hover:bg-[#1a1a1a] transition-colors shadow-lg">Call us today</a>
+        <a href="mailto:hello@advantage.co.uk" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur text-white text-sm font-semibold rounded-full hover:bg-white/30 transition-colors">Email us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="border-t border-line pt-8 pb-4">
+    <div class="flex flex-col sm:flex-row justify-between gap-3 text-[11px] text-faint">
+      <div class="space-y-1">
+        <p>© 2026 Advantage · Award-winning mortgage &amp; insurance advice</p>
+        <p>Appointments arranged via Microsoft Bookings. Advice relates to UK protection products only.</p>
+      </div>
+      <div class="flex gap-4 self-start">
+        <a href="#overview" class="hover:text-strong transition-colors">Back to top</a>
+        <a href="#" class="hover:text-strong transition-colors">Key facts</a>
+        <a href="#" class="hover:text-strong transition-colors">Privacy</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // ================= EDIT ZONE 1: BOOKING URL + DEFAULT CLIENT =================
+  const BOOKING_URL = "https://bookings.cloud.microsoft/owa/calendar/AdvantageProtection@NETORGFT5872714.onmicrosoft.com/bookings/?ismsaljsauthenabled";
+  let activeData = {
+    name: "Tenisha & Michael",     // default shown if no URL params
+    referrer: "Steve Morris",      // the mortgage adviser who referred them
+    adviser: "Laurence"            // the protection adviser
+  };
+  // ================= END EDIT ZONE 1 =================
+
+  // Per-client override: ?q=base64(JSON)  OR  plain ?name=...&referrer=...&adviser=...
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get('q');
+    if (q) {
+      var d = JSON.parse(atob(q));
+      if (d.name) activeData.name = d.name;
+      if (d.referrer) activeData.referrer = d.referrer;
+      if (d.adviser) activeData.adviser = d.adviser;
+    } else {
+      if (params.get('name')) activeData.name = params.get('name');
+      if (params.get('referrer')) activeData.referrer = params.get('referrer');
+      if (params.get('adviser')) activeData.adviser = params.get('adviser');
+    }
+  } catch (e) {
+    console.error("Invalid personalisation data. Using defaults.");
+  }
+
+  function fillAll(cls, value) {
+    var els = document.querySelectorAll('.' + cls);
+    for (var i = 0; i < els.length; i++) els[i].textContent = value;
+  }
+
+  // ===== BOOKING EMBED (do not modify) =====
+  var bookingFrame = document.getElementById('booking-frame');
+  var bookingLoading = document.getElementById('booking-loading');
+  var bookingFallback = document.getElementById('booking-fallback');
+  var bookingLoaded = false;
+
+  bookingFrame.src = BOOKING_URL;
+  document.getElementById('booking-open').href = BOOKING_URL;
+
+  bookingFrame.addEventListener('load', function () {
+    bookingLoaded = true;
+    setTimeout(function () { bookingLoading.classList.add('is-done'); }, 400);
+  });
+  setTimeout(function () {
+    if (!bookingLoaded) {
+      bookingLoading.classList.add('is-done');
+      bookingFallback.classList.remove('hidden');
+    }
+  }, 8000);
+
+  // ===== PROGRESS BAR (do not modify) =====
+  const progress = document.getElementById('progress');
+  function onScroll() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    progress.style.transform = 'scaleX(' + (max ? h.scrollTop / max : 0) + ')';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ===== THEME (do not modify) =====
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('adv-theme', t); } catch (e) {}
+    var sun = document.getElementById('icon-sun');
+    var moon = document.getElementById('icon-moon');
+    if (sun) sun.style.display = (t === 'light') ? 'none' : 'block';
+    if (moon) moon.style.display = (t === 'light') ? 'block' : 'none';
+  }
+  (function () {
+    var t = 'light';
+    try { var s = localStorage.getItem('adv-theme'); if (s === 'light' || s === 'dark') t = s; } catch (e) {}
+    setTheme(t);
+  })();
+  var themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      setTheme(next);
+    });
+  }
+
+  // ===== INIT (do not modify) =====
+  fillAll('fill-name', activeData.name);
+  fillAll('fill-referrer', activeData.referrer);
+  fillAll('fill-adviser', activeData.adviser);
+  onScroll();
+</script>
+</body>
+</html>
